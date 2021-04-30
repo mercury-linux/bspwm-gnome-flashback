@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# File Locations - Baseline
+BASELINE_XRESOURCE_FILE="$HOME/.Xresources"
+
+# Load default Xresources
+if [ -f "$BASELINE_XRESOURCE_FILE" ]; then
+    xrdb -merge $BASELINE_XRESOURCE_FILE
+fi
+
+# Register with gnome-session so that it does not kill the whole session thinking it is dead.
+if [ -n "$DESKTOP_AUTOSTART_ID" ]; then
+    dbus-send --print-reply --session --dest=org.gnome.SessionManager "/org/gnome/SessionManager" org.gnome.SessionManager.RegisterClient "string:bspwm-gnome" "string:$DESKTOP_AUTOSTART_ID"
+fi
+
+# Launch bspwm with gnome
+echo "BSPWM Launching"
+bspwm
+
+# Close session when bspwm exits.
+if [ -n "$DESKTOP_AUTOSTART_ID" ]; then
+    dbus-send --print-reply --session --dest=org.gnome.SessionManager "/org/gnome/SessionManager" org.gnome.SessionManager.Logout "uint32:1"
+fi

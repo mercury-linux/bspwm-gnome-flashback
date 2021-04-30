@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=bspwm-gnome
+Comment=This session logs you into bspwm with GNOME flashback session
+Exec=bspwm-session
+TryExec=bspwm-session-init
+Type=Application
+DesktopNames=BSPWM-GNOME;GNOME-Flashback;GNOME
